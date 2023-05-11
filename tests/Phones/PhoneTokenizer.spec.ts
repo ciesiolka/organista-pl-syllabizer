@@ -49,4 +49,17 @@ describe("Phone Tokenizer parses", () => {
       expect(token1.content = digraph);
     });
   }
+
+  const vowelDigraphs = 'au,eu'.split(',');
+
+  for (const digraph of vowelDigraphs) {
+    it(`Digraphs (${digraph})`, () => {
+      const tokens = tokenizer.tokenize(digraph);;
+      expect(tokens).to.be.length(1);
+
+      const token1 = tokens[0];
+      expect(token1.type).to.be.eq('v');
+      expect(token1.content = digraph);
+    });
+  }
 });

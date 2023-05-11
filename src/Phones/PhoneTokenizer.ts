@@ -1,4 +1,4 @@
-import PhoneToken from "./PhoneToken";
+import type PhoneToken from "./PhoneToken";
 
 const vowels = 'aeiouyąęó'.split('');
 const consonants = 'bcćdfghjklłmnńpqrsśtvwxzźż'.split('');
@@ -26,10 +26,6 @@ class PhoneTokenizer {
 
   private isConsonant(letter: string) {
     return consonants.includes(letter.toLowerCase());
-  }
-
-  private startsDigraph(letter: string) {
-    return letter.toLowerCase() in digraphs;
   }
 
   private isDigraph(begin: string, end: string | undefined) {
@@ -64,7 +60,13 @@ class PhoneTokenizer {
 
   private tokenizeVowel(s: State) {
     const letter = s.letters[s.index];
+    const nextLetter = s.letters.at(s.index + 1);
     const token: PhoneToken = { content: letter, type: 'v' };
+
+    if (this.isDigraph(letter, nextLetter)) {
+      token.content += nextLetter;
+      s.index++;
+    }
 
     s.tokens.push(token);
   }
