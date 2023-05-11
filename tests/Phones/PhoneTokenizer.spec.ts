@@ -1,8 +1,9 @@
 import { describe, it } from "mocha";
 import { expect } from "chai";
 import PhoneTokenizer from "../../src/Phones/PhoneTokenizer";
+import PhoneToken from "../../src/Phones/PhoneToken";
 
-describe("Phone Tokenizer parses", () => {
+describe("Phone Tokenizer parses simple examples", () => {
   const tokenizer = new PhoneTokenizer();
 
   it("Empty string", () => {
@@ -111,4 +112,84 @@ describe("Phone Tokenizer parses", () => {
       expect(token2.content).to.be.eq('ie');
     });
   }
+});
+
+describe("Phone Tokenizer parses complex examples", () => {
+  const tokenizer = new PhoneTokenizer();
+
+  it("krzyż", () => {
+    const word = "krzyż";
+    const tokens = tokenizer.tokenize(word);
+
+    expect(tokens).to.be.length(4);
+
+    expect(tokens).to.be.deep.eq([
+      { content: 'k', type: 'c' },
+      { content: 'rz', type: 'c' },
+      { content: 'y', type: 'v' },
+      { content: 'ż', type: 'c' },
+    ] as PhoneToken[]);
+  });
+
+  it("poszczególni", () => {
+    const word = "poszczególni";
+    const tokens = tokenizer.tokenize(word);
+
+    expect(tokens).to.be.length(10);
+
+    expect(tokens).to.be.deep.eq([
+      { content: 'p', type: 'c' },
+      { content: 'o', type: 'v' },
+      { content: 'sz', type: 'c' },
+      { content: 'cz', type: 'c' },
+      { content: 'e', type: 'v' },
+      { content: 'g', type: 'c' },
+      { content: 'ó', type: 'v' },
+      { content: 'l', type: 'c' },
+      { content: 'n', type: 'c' },
+      { content: 'i', type: 'v' },
+    ] as PhoneToken[]);
+  });
+
+  it("pieniądz", () => {
+    const word = "pieniądz";
+    const tokens = tokenizer.tokenize(word);
+
+    expect(tokens).to.be.length(5);
+
+    expect(tokens).to.be.deep.eq([
+      { content: 'pi', type: 'c' },
+      { content: 'e', type: 'v' },
+      { content: 'ni', type: 'c' },
+      { content: 'ą', type: 'v' },
+      { content: 'dz', type: 'c' },
+    ] as PhoneToken[]);
+  });
+
+  it("dzięki", () => {
+    const word = "dzięki";
+    const tokens = tokenizer.tokenize(word);
+
+    expect(tokens).to.be.length(4);
+
+    expect(tokens).to.be.deep.eq([
+      { content: 'dzi', type: 'c' },
+      { content: 'ę', type: 'v' },
+      { content: 'k', type: 'c' },
+      { content: 'i', type: 'v' },
+    ] as PhoneToken[]);
+  });
+
+  it("dziś", () => {
+    const word = "dziś";
+    const tokens = tokenizer.tokenize(word);
+
+    expect(tokens).to.be.length(3);
+
+    expect(tokens).to.be.deep.eq([
+      { content: 'dz', type: 'c' },
+      { content: 'i', type: 'v' },
+      { content: 'ś', type: 'c' },
+    ] as PhoneToken[]);
+  });
 });
