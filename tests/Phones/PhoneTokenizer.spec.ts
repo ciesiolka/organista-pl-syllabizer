@@ -36,4 +36,17 @@ describe("Phone Tokenizer parses", () => {
       expect(token1.content = consonant);
     });
   }
+
+  const consonantDigraphs = 'ch,cz,dz,dź,dż,qu,rz,sz'.split(',');
+
+  for (const digraph of consonantDigraphs) {
+    it(`Digraphs (${digraph})`, () => {
+      const tokens = tokenizer.tokenize(digraph);;
+      expect(tokens).to.be.length(1);
+
+      const token1 = tokens[0];
+      expect(token1.type).to.be.eq('c');
+      expect(token1.content = digraph);
+    });
+  }
 });
