@@ -63,6 +63,7 @@ class PhoneTokenizer {
     return s.tokens;
   }
 
+
   private tokenizeVowel(s: State) {
     const letter = s.letters[s.index];
 
@@ -81,7 +82,10 @@ class PhoneTokenizer {
     s.tokens.push(token);
   }
 
-
+  /**
+   * Special case for tokenizing letter 'i'
+   * @param s state of tokenizing
+   */
   private tokenizeI(s: State) {
     const letter = s.letters[s.index];
     const nextLetter = s.letters.at(s.index + 1);
