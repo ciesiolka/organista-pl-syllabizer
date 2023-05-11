@@ -20,7 +20,7 @@ describe("Phone Tokenizer parses", () => {
 
       const token1 = tokens[0];
       expect(token1.type).to.be.eq('v');
-      expect(token1.content = vowel);
+      expect(token1.content).to.be.eq(vowel);
     });
   }
 
@@ -33,7 +33,7 @@ describe("Phone Tokenizer parses", () => {
 
       const token1 = tokens[0];
       expect(token1.type).to.be.eq('c');
-      expect(token1.content = consonant);
+      expect(token1.content).to.be.eq(consonant);
     });
   }
 
@@ -46,7 +46,7 @@ describe("Phone Tokenizer parses", () => {
 
       const token1 = tokens[0];
       expect(token1.type).to.be.eq('c');
-      expect(token1.content = digraph);
+      expect(token1.content).to.be.eq(digraph);
     });
   }
 
@@ -54,12 +54,61 @@ describe("Phone Tokenizer parses", () => {
 
   for (const digraph of vowelDigraphs) {
     it(`Digraphs (${digraph})`, () => {
-      const tokens = tokenizer.tokenize(digraph);;
+      const tokens = tokenizer.tokenize(digraph);
       expect(tokens).to.be.length(1);
 
       const token1 = tokens[0];
       expect(token1.type).to.be.eq('v');
-      expect(token1.content = digraph);
+      expect(token1.content).to.be.eq(digraph);
+    });
+  }
+
+  const palatizatables = 'bcdfghkmnprstvwxz'.split('');
+
+  for (const palatizatable of palatizatables) {
+    it(`Palatizable with i followed by vowel (${palatizatable}ie)`, () => {
+      const tokens = tokenizer.tokenize(palatizatable + 'ie');
+      expect(tokens).to.be.length(2);
+
+      const token1 = tokens[0];
+      expect(token1.type).to.be.eq('c');
+      expect(token1.content).to.be.eq(palatizatable + 'i');
+
+      const token2 = tokens[1];
+      expect(token2.type).to.be.eq('v');
+      expect(token2.content).to.be.eq('e');
+    });
+  }
+
+  const nonPallatizables = 'ćjlłńśźż'.split('');
+
+  for (const nonPalatizable of nonPallatizables) {
+    it(`Non-palatizable with i (${nonPalatizable}i)`, () => {
+      const tokens = tokenizer.tokenize(nonPalatizable + 'i');
+      expect(tokens).to.be.length(2);
+
+      const token1 = tokens[0];
+      expect(token1.type).to.be.eq('c');
+      expect(token1.content).to.be.eq(nonPalatizable);
+
+      const token2 = tokens[1];
+      expect(token2.type).to.be.eq('v');
+      expect(token2.content).to.be.eq('i');
+    });
+  }
+
+  for (const nonPalatizable of nonPallatizables) {
+    it(`Non-palatizable with i followed by vowel (${nonPalatizable}ie)`, () => {
+      const tokens = tokenizer.tokenize(nonPalatizable + 'ie');
+      expect(tokens).to.be.length(2);
+
+      const token1 = tokens[0];
+      expect(token1.type).to.be.eq('c');
+      expect(token1.content).to.be.eq(nonPalatizable);
+
+      const token2 = tokens[1];
+      expect(token2.type).to.be.eq('v');
+      expect(token2.content).to.be.eq('ie');
     });
   }
 });
