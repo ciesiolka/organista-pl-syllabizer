@@ -44,9 +44,18 @@ class Syllabizer {
       }
     }
 
-    state.syllables.push(state.syllableBuffer);
+    if (this.lastSylhasVowel(state)) {
+      state.syllables.push(state.syllableBuffer);
+    } else {
+      state.syllables[state.syllables.length - 1] = state.syllables[state.syllables.length - 1].concat(state.syllableBuffer);
+    }
 
     return state.syllables;
+  }
+
+
+  private lastSylhasVowel(state: State) {
+    return state.syllableBuffer.find(token => token.type === 'v') !== undefined;
   }
 
 
@@ -73,6 +82,9 @@ class Syllabizer {
     } else if (this.phonesEq(['n', 'au', 'C'], phones, state)) {
       state.syllables.push([phones[0], { content: phones[1].content.charAt(0), type: 'v' }], [{ content: phones[1].content.charAt(1), type: 'v' }, phones[2]]);
       state.index = 3;
+    } else if (this.phonesEq(['o', 's'], phones, state) || this.phonesEq(['o', 'sz'], phones, state)) {
+      state.syllables.push([phones[0]]);
+      state.index = 1;
     }
   }
 
@@ -99,6 +111,8 @@ class Syllabizer {
     if (prevPhone?.content === currPhone.content) {
       state.sameSyllable = false;
     } else if (prevPhone?.type === 'v' && nextPhone?.type === 'v') {
+      state.sameSyllable = false;
+    } else if (prevPhone?.type === 'v' && nextPhone?.content === 'j' && nextNextPhone?.type === 'v') {
       state.sameSyllable = false;
     } else if (prevPhone?.type === 'c' && !(`${prevPhone.content}${currPhone.content.replace('i', '')}`.toLowerCase() in ConsonantPairs)) {
       state.sameSyllable = false;

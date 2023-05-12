@@ -8,7 +8,7 @@
     "build": "tsup src/index.ts",
     "build:watch": "npm run build -- --watch",
     "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'tests/**/*.ts'",
-    "test:watch": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha --watch --watch-files src/**/*.ts,tests/**/*.ts -r ts-node/register 'tests/**/*.ts'"
+    "test:watch": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha --watch --watch-files src/**/*.ts,tests/**/*.ts,tests/**/*.txt -r ts-node/register 'tests/**/*.ts'"
   },
   "repository": {
     "type": "git",
