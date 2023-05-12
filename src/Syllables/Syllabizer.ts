@@ -67,8 +67,11 @@ class Syllabizer {
 
 
   private handleSpecialCases(phones: PhoneToken[], state: State) {
-    if (this.phonesEq(['n', 'a', 'u', 'C', 'V'], phones, state)) {
-      state.syllables.push([phones[0], phones[1]], [phones[2]]);
+    if (this.phonesEq(['n', 'au', 'C', 'V'], phones, state)) {
+      state.syllables.push([phones[0], { content: phones[1].content.charAt(0), type: 'v' }], [{ content: phones[1].content.charAt(1), type: 'v' }]);
+      state.index = 2;
+    } else if (this.phonesEq(['n', 'au', 'C'], phones, state)) {
+      state.syllables.push([phones[0], { content: phones[1].content.charAt(0), type: 'v' }], [{ content: phones[1].content.charAt(1), type: 'v' }, phones[2]]);
       state.index = 3;
     }
   }
