@@ -33,17 +33,17 @@ describe("Syllabizes word", () => {
   }
 
   // Words which are to be tested should be put in this file
-  const tofix = readFileSync(toFixPath).toString().split("\n");
-  for (const word of tofix) {
-    if (word === '') {
-      continue;
-    }
-    it.only(word, () => {
-      const wordWithoutHyphenPoints = word.replace(/\./g, '');
-      const phones = tokenizer.tokenize(wordWithoutHyphenPoints);
-      const syllables = syllabizer.syllabizePhones(phones);
-      const syllablesStr = phonesToSyllabizedString(syllables);
-      expect(syllablesStr).to.be.eq(word.replace(/\./g, '-'));
-    });
-  }
+  // const tofix = readFileSync(toFixPath).toString().split("\n");
+  // for (const word of tofix) {
+  //   if (word === '') {
+  //     continue;
+  //   }
+  //   it.only(word, () => {
+  //     const wordWithoutHyphenPoints = word.replace(/\./g, '');
+  //     const phones = tokenizer.tokenize(wordWithoutHyphenPoints);
+  //     const syllables = syllabizer.syllabizePhones(phones);
+  //     const syllablesStr = phonesToSyllabizedString(syllables);
+  //     expect(syllablesStr).to.be.eq(word.replace(/\./g, '-'));
+  //   });
+  // }
 });

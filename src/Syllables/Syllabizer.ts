@@ -60,6 +60,9 @@ class Syllabizer {
       state.syllableBuffer.push(currSyll);
       state.syllables.push(state.syllableBuffer);
       state.syllableBuffer = []
+    } else if (prevSyll?.type === 'c' && nextSyll?.type === 'c') {
+      state.syllables.push(state.syllableBuffer);
+      state.syllableBuffer = [currSyll];
     } else {
       state.syllableBuffer.push(currSyll);
     }
