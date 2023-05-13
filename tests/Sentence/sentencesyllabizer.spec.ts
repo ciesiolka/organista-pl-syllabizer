@@ -74,7 +74,7 @@ describe("Sentence syllabizer syllabizes", () => {
     expect(syllable4.content).to.be.eq("kał");
   })
 
-  it.only("k’niemu", () => {
+  it("k’niemu", () => {
     const word = 'k’niemu';
     const syllables = ss.syllabize(word)
     expect(syllables).to.be.length(2);
@@ -88,7 +88,7 @@ describe("Sentence syllabizer syllabizes", () => {
     expect(syllable2.content).to.be.eq("mu");
   })
 
-  it.only("„ona”", () => {
+  it("„ona”", () => {
     const word = '„ona”';
     const syllables = ss.syllabize(word)
     expect(syllables).to.be.length(2);
@@ -100,5 +100,19 @@ describe("Sentence syllabizer syllabizes", () => {
     const syllable2 = syllables[1];
     expect(syllable2.type).to.be.eq('end');
     expect(syllable2.content).to.be.eq("na”");
+  })
+
+  it("ona..", () => {
+    const word = 'ona..';
+    const syllables = ss.syllabize(word)
+    expect(syllables).to.be.length(2);
+
+    const syllable1 = syllables[0];
+    expect(syllable1.type).to.be.eq('start');
+    expect(syllable1.content).to.be.eq("o");
+
+    const syllable2 = syllables[1];
+    expect(syllable2.type).to.be.eq('end');
+    expect(syllable2.content).to.be.eq("na..");
   })
 });
