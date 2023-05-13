@@ -31,14 +31,36 @@ class SentenceSyllabizer {
         const syllables = this._syllabizer.syllabizePhones(phones);
         wordTokens.push(...this.syllablesToTokens(syllables));
       } else {
-        // it's punctuation
+        wordTokens.push({type: 'joinWithNext', content: element});
       }
       tokens.push(...wordTokens);
     }
-    return tokens;
+    return this.mergeJoinWithNext(tokens);
+  }
+
+  private mergeJoinWithNext(tokens: SyllableToken[]): SyllableToken[] {
+    const filteredTokens: SyllableToken[] = [];
+    let buffer = '';
+    for (let i = 0; i < tokens.length; ++i) {
+      if (tokens[i].type !== 'joinWithNext') {
+        const newToken = tokens[i];
+        newToken.content = buffer + newToken.content;
+        filteredTokens.push(newToken);
+        buffer = '';
+      } else {
+        buffer += tokens[i].content;
+      }
+    }
+    if (buffer !== '') {
+      filteredTokens[filteredTokens.length - 1].content += buffer;
+    }
+    return filteredTokens;
   }
 
   private syllablesToTokens(phonesGroups: PhoneToken[][]): SyllableToken[] {
+    if (!phonesGroups.find(group => this.hasVowel(group))) {
+      return [{type: "joinWithNext", content: phonesGroups.map(group => group.reduce<string>((acc, curr) => acc + curr.content, '')).join('')}]
+    }
     if (phonesGroups.length === 1) {
       return [{type: "alone", content: phonesGroups[0].reduce<string>((acc, curr) => acc + curr.content, '')}]
     }
@@ -49,6 +71,10 @@ class SentenceSyllabizer {
     output[0].type = 'start';
     output[output.length - 1].type = 'end';
     return output;
+  }
+
+  private hasVowel(phonesGroup: PhoneToken[]) {
+    return phonesGroup.find(phone => phone.type === 'v') !== undefined;
   }
 }
 

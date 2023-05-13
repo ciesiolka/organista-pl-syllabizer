@@ -11,7 +11,7 @@ describe("Sentence syllabizer syllabizes", () => {
     expect(syllables).to.be.empty;
   })
 
-  it.only("ab", () => {
+  it("ab", () => {
     const word = 'ab';
     const syllables = ss.syllabize(word)
     expect(syllables).to.be.length(1);
@@ -20,7 +20,7 @@ describe("Sentence syllabizer syllabizes", () => {
     expect(syllable1.content).to.be.eq("ab");
   })
 
-  it.only("abba", () => {
+  it("abba", () => {
     const word = 'abba';
     const syllables = ss.syllabize(word)
     expect(syllables).to.be.length(2);
@@ -34,7 +34,7 @@ describe("Sentence syllabizer syllabizes", () => {
     expect(syllable2.content).to.be.eq("ba");
   })
 
-  it.only("telefon", () => {
+  it("telefon", () => {
     const word = 'telefon';
     const syllables = ss.syllabize(word)
     expect(syllables).to.be.length(3);
@@ -52,7 +52,7 @@ describe("Sentence syllabizer syllabizes", () => {
     expect(syllable3.content).to.be.eq("fon");
   })
 
-  it.only("pontyfikał", () => {
+  it("pontyfikał", () => {
     const word = 'pontyfikał';
     const syllables = ss.syllabize(word)
     expect(syllables).to.be.length(4);
@@ -72,5 +72,33 @@ describe("Sentence syllabizer syllabizes", () => {
     const syllable4 = syllables[3];
     expect(syllable4.type).to.be.eq('end');
     expect(syllable4.content).to.be.eq("kał");
+  })
+
+  it.only("k’niemu", () => {
+    const word = 'k’niemu';
+    const syllables = ss.syllabize(word)
+    expect(syllables).to.be.length(2);
+
+    const syllable1 = syllables[0];
+    expect(syllable1.type).to.be.eq('start');
+    expect(syllable1.content).to.be.eq("k’nie");
+
+    const syllable2 = syllables[1];
+    expect(syllable2.type).to.be.eq('end');
+    expect(syllable2.content).to.be.eq("mu");
+  })
+
+  it.only("„ona”", () => {
+    const word = '„ona”';
+    const syllables = ss.syllabize(word)
+    expect(syllables).to.be.length(2);
+
+    const syllable1 = syllables[0];
+    expect(syllable1.type).to.be.eq('start');
+    expect(syllable1.content).to.be.eq("„o");
+
+    const syllable2 = syllables[1];
+    expect(syllable2.type).to.be.eq('end');
+    expect(syllable2.content).to.be.eq("na”");
   })
 });
