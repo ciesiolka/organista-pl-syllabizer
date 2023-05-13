@@ -128,3 +128,4 @@ ag-raf-ka
 ag-re-gat
 ag-re-sor
 ag-re-sja
+ja-ki

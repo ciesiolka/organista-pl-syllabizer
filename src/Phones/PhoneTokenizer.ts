@@ -90,8 +90,8 @@ class PhoneTokenizer {
     const prevToken = s.tokens.at(-1);
     const type = letter.toLowerCase() === 'i' ? 'v' : 'c'
 
-    if (nextLetter && this.isVowel(nextLetter)) {
-      if (prevToken && this.isPalatizable(prevToken.content.slice(-1))) {
+    if (prevToken && nextLetter && this.isVowel(nextLetter)) {
+      if (this.isPalatizable(prevToken.content.slice(-1))) {
         prevToken.content += letter;
       } else {
         s.tokens.push({ content: letter + nextLetter, type });

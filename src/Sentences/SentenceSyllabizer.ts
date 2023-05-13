@@ -74,7 +74,7 @@ class SentenceSyllabizer {
   }
 
   private hasVowel(phonesGroup: PhoneToken[]) {
-    return phonesGroup.find(phone => phone.type === 'v') !== undefined;
+    return phonesGroup.find(phone => phone.content.match(/[aeiouyąęó]/i)) !== undefined;
   }
 }
 

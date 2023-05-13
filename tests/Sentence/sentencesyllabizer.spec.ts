@@ -115,4 +115,37 @@ describe("Sentence syllabizer syllabizes", () => {
     expect(syllable2.type).to.be.eq('end');
     expect(syllable2.content).to.be.eq("na..");
   })
+
+  it("a ja", () => {
+    const word = 'a ja';
+    const syllables = ss.syllabize(word)
+    expect(syllables).to.be.length(2);
+
+    const syllable1 = syllables[0];
+    expect(syllable1.type).to.be.eq('alone');
+    expect(syllable1.content).to.be.eq("a");
+
+    const syllable2 = syllables[1];
+    expect(syllable2.type).to.be.eq('alone');
+    expect(syllable2.content).to.be.eq("ja");
+  })
+
+  it("a jaki", () => {
+    const word = 'a jaki';
+    const syllables = ss.syllabize(word)
+    console.log(JSON.stringify(syllables));
+    expect(syllables).to.be.length(3);
+
+    const syllable1 = syllables[0];
+    expect(syllable1.type).to.be.eq('alone');
+    expect(syllable1.content).to.be.eq("a");
+
+    const syllable2 = syllables[1];
+    expect(syllable2.type).to.be.eq('start');
+    expect(syllable2.content).to.be.eq("ja");
+
+    const syllable3 = syllables[2];
+    expect(syllable3.type).to.be.eq('end');
+    expect(syllable3.content).to.be.eq("ki");
+  })
 });
