@@ -1,5 +1,4 @@
 import PhoneToken from "../Phones/PhoneToken";
-import ConsonantPairs from "./ConsonantPairs";
 
 type State = {
   syllables: PhoneToken[][];
