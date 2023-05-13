@@ -2,10 +2,8 @@ import type PhoneToken from "./PhoneToken";
 
 const vowels = 'aeiouyąęó'.split('');
 const consonants = 'bcćdfghjklłmnńpqrsśtvwxzźż'.split('');
-const palazitables = 'bcdfghkmnprstvwxz'.split('');
+const palazitables = 'bcdfghjkmnprstvwxz'.split('');
 const digraphs = {
-  'a': ['u'],
-  'e': ['u'],
   'c': 'hz'.split(''),
   'd': 'zźż'.split(''),
   'q': ['u'],
@@ -68,7 +66,7 @@ class PhoneTokenizer {
     const letter = s.letters[s.index];
 
     if (letter.toLowerCase() === 'i') {
-      return this.tokenizeI(s);
+      return this.tokenizeIorJ(s);
     }
 
     const nextLetter = s.letters.at(s.index + 1);
@@ -83,23 +81,24 @@ class PhoneTokenizer {
   }
 
   /**
-   * Special case for tokenizing letter 'i'
+   * Special case for tokenizing letter 'i' and 'j'
    * @param s state of tokenizing
    */
-  private tokenizeI(s: State) {
+  private tokenizeIorJ(s: State) {
     const letter = s.letters[s.index];
     const nextLetter = s.letters.at(s.index + 1);
     const prevToken = s.tokens.at(-1);
+    const type = letter.toLowerCase() === 'i' ? 'v' : 'c'
 
     if (nextLetter && this.isVowel(nextLetter)) {
       if (prevToken && this.isPalatizable(prevToken.content.slice(-1))) {
         prevToken.content += letter;
       } else {
-        s.tokens.push({ content: letter + nextLetter, type: 'v' });
+        s.tokens.push({ content: letter + nextLetter, type });
         s.index++;
       }
     } else {
-      s.tokens.push({ content: letter, type: 'v' });
+      s.tokens.push({ content: letter, type });
     }
   }
 
@@ -107,6 +106,10 @@ class PhoneTokenizer {
     const letter = s.letters[s.index];
     const nextLetter = s.letters.at(s.index + 1);
     const token: PhoneToken = { content: letter, type: 'c' };
+
+    if (letter.toLowerCase() === 'j') {
+      return this.tokenizeIorJ(s);
+    }
 
     if (this.isDigraph(letter, nextLetter)) {
       token.content += nextLetter;

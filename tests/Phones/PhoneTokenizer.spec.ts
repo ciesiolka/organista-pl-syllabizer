@@ -6,9 +6,8 @@ import PhoneToken from "../../src/Phones/PhoneToken";
 const vowels = 'aąeęioóuy'.split('');
 const consonants = 'bcćdfghjklłmnpqrsśtvwxzźż'.split('');
 const consonantDigraphs = 'ch,cz,dz,dź,dż,qu,rz,sz'.split(',');
-const vowelDigraphs = 'au,eu'.split(',');
-const palatizatables = 'bcdfghkmnprstvwxz'.split('');
-const nonPallatizables = 'ćjlłńśźż'.split('');
+const palatizatables = 'bcdfghjkmnprstvwxz'.split('');
+const nonPallatizables = 'ćlłńśźż'.split('');
 
 
 describe("Phone Tokenizer parses simple examples", () => {
@@ -57,18 +56,6 @@ describe("Phone Tokenizer parses simple examples", () => {
   }
 
 
-  for (const digraph of vowelDigraphs) {
-    it(`Digraphs (${digraph})`, () => {
-      const tokens = tokenizer.tokenize(digraph);
-      expect(tokens).to.be.length(1);
-
-      const token1 = tokens[0];
-      expect(token1.type).to.be.eq('v');
-      expect(token1.content).to.be.eq(digraph);
-    });
-  }
-
-
   for (const palatizatable of palatizatables) {
     it(`Palatizable with i followed by vowel (${palatizatable}ie)`, () => {
       const tokens = tokenizer.tokenize(palatizatable + 'ie');
@@ -83,6 +70,22 @@ describe("Phone Tokenizer parses simple examples", () => {
       expect(token2.content).to.be.eq('e');
     });
   }
+
+  for (const palatizatable of palatizatables) {
+    it(`Palatizable with j followed by vowel (${palatizatable}je)`, () => {
+      const tokens = tokenizer.tokenize(palatizatable + 'je');
+      expect(tokens).to.be.length(2);
+
+      const token1 = tokens[0];
+      expect(token1.type).to.be.eq('c');
+      expect(token1.content).to.be.eq(palatizatable + 'j');
+
+      const token2 = tokens[1];
+      expect(token2.type).to.be.eq('v');
+      expect(token2.content).to.be.eq('e');
+    });
+  }
+
 
 
   for (const nonPalatizable of nonPallatizables) {
@@ -154,19 +157,6 @@ describe("Phone Tokenizer parses simple UPPERCASE examples", () => {
     });
   }
 
-
-  for (const digraph of vowelDigraphs.map(e => e.toUpperCase())) {
-    it(`Digraphs (${digraph})`, () => {
-      const tokens = tokenizer.tokenize(digraph);
-      expect(tokens).to.be.length(1);
-
-      const token1 = tokens[0];
-      expect(token1.type).to.be.eq('v');
-      expect(token1.content).to.be.eq(digraph);
-    });
-  }
-
-
   for (const palatizatable of palatizatables.map(e => e.toUpperCase())) {
     it(`Palatizable with i followed by vowel (${palatizatable}IE)`, () => {
       const tokens = tokenizer.tokenize(palatizatable + 'IE');
@@ -175,6 +165,21 @@ describe("Phone Tokenizer parses simple UPPERCASE examples", () => {
       const token1 = tokens[0];
       expect(token1.type).to.be.eq('c');
       expect(token1.content).to.be.eq(palatizatable + 'I');
+
+      const token2 = tokens[1];
+      expect(token2.type).to.be.eq('v');
+      expect(token2.content).to.be.eq('E');
+    });
+  }
+
+  for (const palatizatable of palatizatables.map(e => e.toUpperCase())) {
+    it(`Palatizable with j followed by vowel (${palatizatable}JE)`, () => {
+      const tokens = tokenizer.tokenize(palatizatable + 'JE');
+      expect(tokens).to.be.length(2);
+
+      const token1 = tokens[0];
+      expect(token1.type).to.be.eq('c');
+      expect(token1.content).to.be.eq(palatizatable + 'J');
 
       const token2 = tokens[1];
       expect(token2.type).to.be.eq('v');
